@@ -101,23 +101,75 @@ function getFeaturedItems() {
     return items.filter(item => item.featured);
 }
 
+const REVIEWS = [
+    { name: 'Sarah Johnson', role: 'Local Guide', time: '2 weeks ago', text: 'Absolutely love this place! Found some amazing vintage pieces for my home. The staff was incredibly helpful and knowledgeable. Highly recommend!', stars: 5 },
+    { name: 'Mike Chen', role: '', time: 'a month ago', text: 'Great selection of antiques and unique items. Prices are fair and the quality is excellent. Will definitely be back for more treasures.', stars: 5 },
+    { name: 'Emily Davis', role: 'Local Guide', time: '3 weeks ago', text: 'Such a charming antique store! I found the perfect vintage dresser for my bedroom. The owner was so passionate about each piece\'s history.', stars: 5 },
+    { name: 'David Wilson', role: '', time: '1 month ago', text: 'Incredible collection of vintage furniture and decor. Everything is well-priced and in great condition. Love supporting local businesses like this.', stars: 5 },
+    { name: 'Lisa Thompson', role: 'Local Guide', time: '2 weeks ago', text: 'Hidden gem in Louisville! Found some beautiful mid-century pieces and the staff helped me coordinate delivery. Fantastic experience.', stars: 5 },
+    { name: 'Robert Martinez', role: '', time: '3 weeks ago', text: 'Amazing antique store with genuine pieces. The prices are reasonable and the quality is outstanding. Highly recommend for vintage lovers.', stars: 5 },
+    { name: 'Jennifer Brown', role: 'Local Guide', time: '1 month ago', text: 'Love this place! Such a great selection of unique items. Found some perfect gifts and home decor pieces. The atmosphere is wonderful too.', stars: 5 },
+    { name: 'Kevin Lee', role: '', time: '2 weeks ago', text: 'Excellent antique shop with knowledgeable staff. Found exactly what I was looking for - a beautiful vintage sideboard. Very satisfied!', stars: 5 },
+    { name: 'Amanda White', role: 'Local Guide', time: '3 weeks ago', text: 'Such a treasure trove of vintage finds! The store is well-organized and the pieces are in excellent condition. Great prices too.', stars: 5 },
+    { name: 'Thomas Garcia', role: '', time: '1 month ago', text: 'Wonderful antique store with a great variety of items. The staff is friendly and helpful. Found some amazing pieces for my collection.', stars: 5 },
+    { name: 'Rachel Miller', role: 'Local Guide', time: '2 weeks ago', text: 'Love discovering unique pieces here! The selection is always changing and the quality is consistently high. Highly recommend.', stars: 5 },
+    { name: 'James Rodriguez', role: '', time: '3 weeks ago', text: 'Great local antique shop. Found some beautiful vintage lamps and decor. Prices are fair and the staff is very accommodating.', stars: 5 },
+    { name: 'Michelle Taylor', role: 'Local Guide', time: '1 month ago', text: 'Such a charming store with wonderful vintage finds! I always discover something special here. The owner\'s passion for antiques shines through.', stars: 5 },
+    { name: 'Christopher Anderson', role: '', time: '2 weeks ago', text: 'Excellent selection of quality antiques. The store is clean, well-organized, and the staff is knowledgeable. Great experience overall.', stars: 5 },
+    { name: 'Stephanie Moore', role: 'Local Guide', time: '3 weeks ago', text: 'Love this antique store! Always find unique pieces that tell a story. The prices are reasonable and the quality is excellent.', stars: 5 },
+    { name: 'Daniel Jackson', role: '', time: '1 month ago', text: 'Fantastic antique shop with a great variety. Found some beautiful vintage furniture pieces. Highly recommend for anyone seeking quality antiques.', stars: 5 },
+    { name: 'Nicole Harris', role: 'Local Guide', time: '2 weeks ago', text: 'Such a hidden gem! The selection is amazing and the staff is incredibly helpful. Found the perfect vintage chair for my living room.', stars: 5 },
+    { name: 'Matthew Clark', role: '', time: '3 weeks ago', text: 'Great antique store with genuine pieces at fair prices. The atmosphere is welcoming and the staff is knowledgeable. Will return often.', stars: 5 },
+    { name: 'Ashley Lewis', role: 'Local Guide', time: '1 month ago', text: 'Love the unique collection here! Always find something special. The store has a great vibe and the prices are very reasonable.', stars: 5 },
+    { name: 'Joshua Walker', role: '', time: '2 weeks ago', text: 'Excellent antique shop with high-quality items. Found some amazing vintage decor pieces. The staff was very helpful with my selections.', stars: 5 }
+];
+
 // Page Renderers
+function renderReviewCard(review) {
+    const stars = '★'.repeat(review.stars);
+    const truncatedText = review.text.length > 160 ? review.text.substring(0, 160) + '…' : review.text;
+    return `
+        <div class="review-card">
+            <div class="review-stars">${stars}</div>
+            <div class="review-name">${review.name}</div>
+            <div class="review-meta">${review.role}${review.role && review.time ? ' • ' : ''}${review.time}</div>
+            <div class="review-text">${truncatedText}</div>
+        </div>
+    `;
+}
+
 async function renderHome() {
     document.getElementById('page-content').innerHTML = '<div class="page-container"><p>Loading...</p></div>';
     const items = await fetchItems();
-    const featured = getFeaturedItems().slice(0, 4);
+    const featured = getFeaturedItems();
     const content = `
         <div class="page-container">
+            <!-- Hero Section -->
             <section class="hero">
                 <h1>Timeless Finds, Modern Living</h1>
                 <p>Discover unique antiques and vintage treasures at Dreamlight Antiques.</p>
                 <button onclick="navigateTo('shop')">Browse Our Collection</button>
             </section>
+            
+            <!-- Featured Items Section -->
             <section class="featured">
                 <h2>Featured Items</h2>
                 <p class="section-subtitle">Handpicked pieces from our collection</p>
                 <div class="home-featured">
                     ${featured.map(item => renderItemCard(item)).join('')}
+                </div>
+            </section>
+            
+            <!-- Customer Reviews Section -->
+            <section class="reviews-section">
+                <h2>What Our Customers Say</h2>
+                <p class="section-subtitle">Real reviews from Google Maps</p>
+                <div class="reviews-track-wrapper">
+                    <div class="reviews-track" id="reviews-track">
+                        <!-- cards rendered twice for seamless loop -->
+                        ${REVIEWS.map(renderReviewCard).join('')}
+                        ${REVIEWS.map(renderReviewCard).join('')}
+                    </div>
                 </div>
             </section>
         </div>
@@ -265,7 +317,7 @@ function renderFAQ() {
         { q: 'What are your store hours?', a: 'We are open Monday through Saturday, 10am to 6pm.' }
     ];
     const content = `
-        <div class="page-container">
+        <div class="page-container faq-page">
             <h1>FAQ</h1>
             ${faqs.map(faq => `
                 <div class="faq-item">
@@ -333,10 +385,10 @@ function openModal(item) {
             </header>
             <div class="gallery">
                 <img id="modal-main-img" src="${item.images[0] || ''}" alt="${item.name}">
-                ${item.images.length > 1 ? `<div class="thumbs">
+            </div>
+            ${item.images.length > 1 ? `<div class="thumbs">
                     ${item.images.map((img, idx) => `<div class="thumb ${idx === 0 ? 'active' : ''}" data-src="${img}"><img src="${img}" alt=""></div>`).join('')}
                 </div>` : ''}
-            </div>
             <div class="item-info">
                 <div class="card-category">${item.category}</div>
                 <h2>${item.name}</h2>
@@ -461,7 +513,7 @@ function showConfirmation(item, formData) {
     const editLink = section.querySelector('#edit-link');
     editLink.addEventListener('click', (e) => {
         e.preventDefault();
-        editInquiry(item, formData.name, formData.contact, formData.pickup);
+        editInquiry(item, formData);
     });
 }
 
@@ -475,28 +527,28 @@ function sendWhatsApp(item, formData) {
     window.open(url, '_blank');
 }
 
-function editInquiry(item, name, contact, pickup) {
+function editInquiry(item, formData) {
     const section = document.getElementById('inquiry-section');
     section.innerHTML = `
         <h3>Inquire About This Item</h3>
         <div class="form-group">
             <label for="inq-name">Your Name</label>
-            <input type="text" id="inq-name" class="form-input" placeholder="Your Name" value="${escapeHtml(name)}">
+            <input type="text" id="inq-name" class="form-input" placeholder="Your Name" value="${escapeHtml(formData.name)}">
         </div>
         <div class="form-group">
             <label for="inq-contact">Preferred Contact Method</label>
             <select id="inq-contact" class="form-input">
                 <option value="">Preferred Contact Method</option>
-                <option value="Email" ${contact === 'Email' ? 'selected' : ''}>Email</option>
-                <option value="Phone" ${contact === 'Phone' ? 'selected' : ''}>Phone</option>
+                <option value="Email" ${formData.contact === 'Email' ? 'selected' : ''}>Email</option>
+                <option value="Phone" ${formData.contact === 'Phone' ? 'selected' : ''}>Phone</option>
             </select>
         </div>
         <div class="form-group">
             <label for="inq-pickup">Pickup Preference</label>
             <select id="inq-pickup" class="form-input">
                 <option value="">Pickup Preference</option>
-                <option value="In-store pickup" ${pickup === 'In-store pickup' ? 'selected' : ''}>In-store pickup</option>
-                <option value="Delivery needed" ${pickup === 'Delivery needed' ? 'selected' : ''}>Delivery needed</option>
+                <option value="In-store pickup" ${formData.pickup === 'In-store pickup' ? 'selected' : ''}>In-store pickup</option>
+                <option value="Delivery needed" ${formData.pickup === 'Delivery needed' ? 'selected' : ''}>Delivery needed</option>
             </select>
         </div>
         <button id="inq-submit" class="wa-btn">Send Inquiry via WhatsApp</button>

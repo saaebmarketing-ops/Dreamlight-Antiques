@@ -663,6 +663,17 @@ nav {
     padding: 0;
 }
 
+.faq-page {
+    max-width: 760px;
+}
+
+.faq-page h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    margin-bottom: 32px;
+    color: var(--text);
+}
+
 .page-container > h1 {
     font-family: 'Playfair Display', serif;
     font-size: 36px;
@@ -782,6 +793,75 @@ nav {
     transform: scale(1.04);
 }
 
+/* Reviews Section */
+.reviews-section {
+    padding: 40px 48px;
+}
+
+.reviews-track-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.reviews-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: reviewsScroll 50s linear infinite;
+}
+
+.reviews-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes reviewsScroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.review-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 22px;
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.review-stars {
+    color: #c8a84b;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.review-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.review-meta {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+}
+
+.review-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
 /* Hamburger Button Styles */
 .nav-toggle {
     display: none;
@@ -881,6 +961,10 @@ nav {
         padding: 32px 24px;
     }
 
+    .reviews-section {
+        padding: 32px 24px;
+    }
+
     .modal-panel {
         width: 100%;
         border-radius: var(--radius-lg) 0 0 var(--radius-lg);
@@ -971,6 +1055,10 @@ nav {
         padding: 24px 16px;
     }
 
+    .reviews-section {
+        padding: 24px 16px;
+    }
+
     .contact-body,
     .about-body {
         padding: 24px 16px;
@@ -978,6 +1066,10 @@ nav {
 
     .shop-layout {
         padding: 24px 16px;
+    }
+
+    .review-card {
+        width: 240px;
     }
 }
 
